@@ -1,0 +1,52 @@
+#!/bin/bash
+set -euo pipefail
+IFS=$'\n\t'
+
+function openRepository
+{
+    GITHUBURL=$(gh browse --no-browser --branch $(git branch --show-current))
+    CODESPACESURL="https://github.dev/${GITHUBURL/https:\/\/github.com//}"
+    CODESPACESURL="${CODESPACESURL/\/\/\///}"
+    echo $CODESPACESURL
+
+    if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+        sensible-browser "${CODESPACESURL}" || x-www-browser "${CODESPACESURL}" ||  xdg-open "${CODESPACESURL}" || gnome-open "${CODESPACESURL}"
+    elif [[ "$OSTYPE" == "darwin"* ]]; then
+        open "${CODESPACESURL}" 
+    else
+        echo Error: unknown operating system, unable to open "${CODESPACESURL}"
+        exit 1
+    fi
+}
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+  open|--open)
+    openRepository
+    exit 0
+    ;;
+  -h|--help)
+    cat << EOF
+GitHub Command line interface for Codespaces
+Usage:
+  gh gp [command]
+Available Commands:
+  help                Help about any command
+  open                Opens the GitHub repository in a workspace
+Flags:
+  -h, --help   help for gh gp
+EOF
+    exit 0
+    ;;
+    *)
+    cat << EOF
+Error: unknown command "$1" for "gh gp"
+Run 'gh gp --help' for usage.
+EOF
+  exit 1
+  ;;
+  esac
+done
+
+# default behaviour is to open the repository
+openRepository
