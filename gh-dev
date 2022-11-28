@@ -19,10 +19,20 @@ function openRepository
     fi
 }
 
+function mailConfig
+{
+    git config --local user.name 'rick'
+    git config --local user.email 'LinuxSuRen@users.noreply.github.com'
+}
+
 while [ $# -gt 0 ]; do
   case "$1" in
   open|--open)
     openRepository
+    exit 0
+    ;;
+  mail|--mail)
+    mailConfig
     exit 0
     ;;
   -h|--help)
