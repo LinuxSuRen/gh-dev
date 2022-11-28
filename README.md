@@ -10,11 +10,11 @@ gh extension install linuxsuren/gh-dev
 ## Usage
 
 ```shell
-$ gh gp --help
+$ gh dev --help
 
 GitHub Command line interface for Codespaces
 Usage:
-  gh gp [command]
+  gh dev [command]
 Available Commands:
   help                Help about any command
   open                Opens the GitHub repository in a workspace
