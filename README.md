@@ -18,8 +18,10 @@ Usage:
 Available Commands:
   help                Help about any command
   open                Opens the GitHub repository in a workspace
+  mail                Set the git config (name and email) locally
+  clone               Clone and fork the repository from a mirror of GitHub
 Flags:
-  -h, --help   help for gh gp
+  -h, --help   help for gh dev
 ```
 
 ## Thanks

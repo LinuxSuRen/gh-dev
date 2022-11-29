@@ -25,6 +25,14 @@ function mailConfig
     git config --local user.email 'LinuxSuRen@users.noreply.github.com'
 }
 
+function clone
+{
+    git clone https://ghproxy.com/https://github.com/$1 $1
+    cd $1
+    git remote set-url origin https://github.com/$1
+    gh repo fork --remote
+}
+
 while [ $# -gt 0 ]; do
   case "$1" in
   open|--open)
@@ -35,23 +43,29 @@ while [ $# -gt 0 ]; do
     mailConfig
     exit 0
     ;;
+  clone|--clone)
+    clone $2
+    exit 0
+    ;;
   -h|--help)
     cat << EOF
 GitHub Command line interface for Codespaces
 Usage:
-  gh gp [command]
+  gh dev [command]
 Available Commands:
   help                Help about any command
   open                Opens the GitHub repository in a workspace
+  mail                Set the git config (name and email) locally
+  clone               Clone and fork the repository from a mirror of GitHub
 Flags:
-  -h, --help   help for gh gp
+  -h, --help   help for gh dev
 EOF
     exit 0
     ;;
     *)
     cat << EOF
-Error: unknown command "$1" for "gh gp"
-Run 'gh gp --help' for usage.
+Error: unknown command "$1" for "gh dev"
+Run 'gh dev --help' for usage.
 EOF
   exit 1
   ;;
