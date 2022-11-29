@@ -7,14 +7,27 @@ function openRepository
     GITHUBURL=$(gh browse --no-browser --branch $(git branch --show-current))
     CODESPACESURL="https://github.dev/${GITHUBURL/https:\/\/github.com//}"
     CODESPACESURL="${CODESPACESURL/\/\/\///}"
-    echo $CODESPACESURL
+    open $CODESPACESURL
+}
 
-    if [[ "$OSTYPE" == "linux-gnu"* ]]; then
-        sensible-browser "${CODESPACESURL}" || x-www-browser "${CODESPACESURL}" ||  xdg-open "${CODESPACESURL}" || gnome-open "${CODESPACESURL}"
+function openGitPod
+{
+    GITHUBURL=$(gh browse --no-browser --branch $(git branch --show-current))
+    CODESPACESURL="https://gitpod.io/#${GITHUBURL}"
+    CODESPACESURL="${CODESPACESURL/\/\/\///}"
+    open $CODESPACESURL
+}
+
+function open
+{
+    if [[ $(uname -r)  == *"WSL2" ]]; then
+        /mnt/c/Program\ Files/Google/Chrome/Application/chrome.exe $1
+    elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
+        sensible-browser "${1}" || x-www-browser "${1}" ||  xdg-open "${1}" || gnome-open "${1}"
     elif [[ "$OSTYPE" == "darwin"* ]]; then
-        open "${CODESPACESURL}" 
+        open "${1}"
     else
-        echo Error: unknown operating system, unable to open "${CODESPACESURL}"
+        echo Error: unknown operating system, unable to open "${1}"
         exit 1
     fi
 }
@@ -39,6 +52,10 @@ while [ $# -gt 0 ]; do
     openRepository
     exit 0
     ;;
+  gitpod|--gitpod)
+    openGitPod
+    exit 0
+    ;;
   mail|--mail)
     mailConfig
     exit 0
@@ -55,6 +72,7 @@ Usage:
 Available Commands:
   help                Help about any command
   open                Opens the GitHub repository in a workspace
+  gitpod              Opens the GitHub repository in a GitPod workspace
   mail                Set the git config (name and email) locally
   clone               Clone and fork the repository from a mirror of GitHub
 Flags:
