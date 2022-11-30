@@ -18,10 +18,26 @@ function openGitPod
     open $CODESPACESURL
 }
 
+function openVscode
+{
+    GITHUBURL=$(gh browse --no-browser --branch $(git branch --show-current))
+    CODESPACESURL="vscode://vscode.git/clone?url=${GITHUBURL}"
+    CODESPACESURL="${CODESPACESURL/\/\/\///}"
+    powershell.exe start $CODESPACESURL
+}
+
+function openIdea
+{
+    GITHUBURL=$(gh browse --no-browser --branch $(git branch --show-current))
+    CODESPACESURL="jetbrains://idea/checkout/git?checkout.repo=${GITHUBURL}"
+    CODESPACESURL="${CODESPACESURL/\/\/\///}"
+    powershell.exe start "$CODESPACESURL"
+}
+
 function open
 {
     if [[ $(uname -r)  == *"WSL2" ]]; then
-        /mnt/c/Program\ Files/Google/Chrome/Application/chrome.exe $1
+        powershell.exe start "chrome.exe $1"
     elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
         sensible-browser "${1}" || x-www-browser "${1}" ||  xdg-open "${1}" || gnome-open "${1}"
     elif [[ "$OSTYPE" == "darwin"* ]]; then
@@ -54,6 +70,14 @@ while [ $# -gt 0 ]; do
     ;;
   gitpod|--gitpod)
     openGitPod
+    exit 0
+    ;;
+  vscode|--vscode)
+    openVscode
+    exit 0
+    ;;
+  idea|--idea)
+    openIdea
     exit 0
     ;;
   mail|--mail)
