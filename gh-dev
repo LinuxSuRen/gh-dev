@@ -74,6 +74,11 @@ function clone
     gh repo fork --remote
 }
 
+function push
+{
+    watch "timeout 3s git push"
+}
+
 function help
 {
     cat << EOF
@@ -88,6 +93,7 @@ Available Commands:
   mail                Set the git config (name and email) locally
   mrCheckout          Checkout to a MR in a Gitlab repository
   clone               Clone and fork the repository from a mirror of GitHub
+  push                Run 'git push' command for many times
 Flags:
   -h, --help   help for gh dev
 EOF
@@ -125,6 +131,10 @@ while [ $# -gt 0 ]; do
     ;;
   clone|--clone)
     clone $2
+    exit 0
+    ;;
+  push|--push)
+    push
     exit 0
     ;;
   -h|--help)
