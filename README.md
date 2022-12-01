@@ -10,6 +10,20 @@ gh extension install linuxsuren/gh-dev
 
 The command format is: `gh dev sub-command`.
 
+### Open in browser
+
+You could run this command in a git repository directory:
+
+```shell
+gh dev open
+```
+
+This command supports the following platform:
+
+* Linux
+* macOS
+* WSL (Windows Subsystem Linux)
+
 ### Clone GitHub repository from a mirror
 
 It is helpful when you try to clone a BIG repository. The following command will clone into directory `kubernetes/kubernetes`.

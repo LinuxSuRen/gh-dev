@@ -2,7 +2,13 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-function openRepository
+function openBrowser
+{
+    GITHUBURL=$(gh browse --no-browser --branch $(git branch --show-current))
+    open $GITHUBURL
+}
+
+function openCodespace
 {
     GITHUBURL=$(gh browse --no-browser --branch $(git branch --show-current))
     CODESPACESURL="https://github.dev/${GITHUBURL/https:\/\/github.com//}"
@@ -43,7 +49,7 @@ function mrCheckout
 function open
 {
     if [[ $(uname -r)  == *"WSL2" ]]; then
-        powershell.exe start "chrome.exe $1"
+        powershell.exe start "$1"
     elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
         sensible-browser "${1}" || x-www-browser "${1}" ||  xdg-open "${1}" || gnome-open "${1}"
     elif [[ "$OSTYPE" == "darwin"* ]]; then
@@ -76,7 +82,8 @@ Usage:
   gh dev [command]
 Available Commands:
   help                Help about any command
-  open                Opens the GitHub repository in a workspace
+  open                Opens the git repository in a browser
+  codespace           Opens the GitHub repository in a workspace
   gitpod              Opens the GitHub repository in a GitPod workspace
   mail                Set the git config (name and email) locally
   mrCheckout          Checkout to a MR in a Gitlab repository
@@ -89,7 +96,11 @@ EOF
 while [ $# -gt 0 ]; do
   case "$1" in
   open|--open)
-    openRepository
+    openBrowser
+    exit 0
+    ;;
+  codespace|cs|--codespace|--cs)
+    openCodespace
     exit 0
     ;;
   gitpod|--gitpod)
