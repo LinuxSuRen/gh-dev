@@ -34,6 +34,12 @@ function openIdea
     powershell.exe start "$CODESPACESURL"
 }
 
+function mrCheckout
+{
+    git fetch origin merge-requests/$1/head:mr-$1
+    git checkout mr-$1
+}
+
 function open
 {
     if [[ $(uname -r)  == *"WSL2" ]]; then
@@ -62,6 +68,24 @@ function clone
     gh repo fork --remote
 }
 
+function help
+{
+    cat << EOF
+Enhancement of GitHub Command line interface
+Usage:
+  gh dev [command]
+Available Commands:
+  help                Help about any command
+  open                Opens the GitHub repository in a workspace
+  gitpod              Opens the GitHub repository in a GitPod workspace
+  mail                Set the git config (name and email) locally
+  mrCheckout          Checkout to a MR in a Gitlab repository
+  clone               Clone and fork the repository from a mirror of GitHub
+Flags:
+  -h, --help   help for gh dev
+EOF
+}
+
 while [ $# -gt 0 ]; do
   case "$1" in
   open|--open)
@@ -80,6 +104,10 @@ while [ $# -gt 0 ]; do
     openIdea
     exit 0
     ;;
+  mrCheckout|mrCo|--mrCheckout|--mrCo)
+    mrCheckout $2
+    exit 0
+    ;;
   mail|--mail)
     mailConfig
     exit 0
@@ -89,19 +117,7 @@ while [ $# -gt 0 ]; do
     exit 0
     ;;
   -h|--help)
-    cat << EOF
-GitHub Command line interface for Codespaces
-Usage:
-  gh dev [command]
-Available Commands:
-  help                Help about any command
-  open                Opens the GitHub repository in a workspace
-  gitpod              Opens the GitHub repository in a GitPod workspace
-  mail                Set the git config (name and email) locally
-  clone               Clone and fork the repository from a mirror of GitHub
-Flags:
-  -h, --help   help for gh dev
-EOF
+    help
     exit 0
     ;;
     *)
@@ -114,5 +130,5 @@ EOF
   esac
 done
 
-# default behaviour is to open the repository
-openRepository
+# default behaviour is to print the help information
+help

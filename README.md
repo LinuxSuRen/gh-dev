@@ -1,5 +1,4 @@
-A [gh](https://github.com/cli/cli) extension to work with GitHub repositories in Codespaces.
-
+A [gh](https://github.com/cli/cli) extension with some enhancement features.
 
 ## Installation
 
@@ -9,19 +8,20 @@ gh extension install linuxsuren/gh-dev
 
 ## Usage
 
-```shell
-$ gh dev --help
+The command format is: `gh dev sub-command`.
 
-GitHub Command line interface for Codespaces
-Usage:
-  gh dev [command]
-Available Commands:
-  help                Help about any command
-  open                Opens the GitHub repository in a workspace
-  mail                Set the git config (name and email) locally
-  clone               Clone and fork the repository from a mirror of GitHub
-Flags:
-  -h, --help   help for gh dev
+### Clone GitHub repository from a mirror
+
+It is helpful when you try to clone a BIG repository. The following command will clone into directory `kubernetes/kubernetes`.
+
+```shell
+gh dev clone kubernetes/kubernetes
+```
+
+### Checkout to a MR in a Gitlab repository
+
+```shell
+gh dev mrCheckout 1 # or gh dev mrCo 1
 ```
 
 ## Thanks
