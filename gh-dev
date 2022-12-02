@@ -76,7 +76,12 @@ function clone
 
 function push
 {
-    watch "timeout 3s git push"
+    watch --chgexit -n 3 "timeout 3s git push"
+}
+
+function pull
+{
+    watch --chgexit -n 3 "timeout 3s git pull"
 }
 
 function help
@@ -94,6 +99,7 @@ Available Commands:
   mrCheckout          Checkout to a MR in a Gitlab repository
   clone               Clone and fork the repository from a mirror of GitHub
   push                Run 'git push' command for many times
+  pull                Run 'git pull' command for many times
 Flags:
   -h, --help   help for gh dev
 EOF
@@ -135,6 +141,10 @@ while [ $# -gt 0 ]; do
     ;;
   push|--push)
     push
+    exit 0
+    ;;
+  pull|--pull)
+    pull
     exit 0
     ;;
   -h|--help)
