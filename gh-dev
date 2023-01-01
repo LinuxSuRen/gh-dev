@@ -76,7 +76,7 @@ function clone
 
 function push
 {
-    watch --chgexit -n 3 "timeout 3s git push"
+    watch --chgexit -n 3 "timeout 3s git push $@"
 }
 
 function pull
@@ -140,7 +140,8 @@ while [ $# -gt 0 ]; do
     exit 0
     ;;
   push|--push)
-    push
+    shift
+    push $@
     exit 0
     ;;
   pull|--pull)
