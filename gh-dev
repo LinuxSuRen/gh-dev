@@ -68,7 +68,7 @@ function mailConfig
 
 function clone
 {
-    git clone https://gh-proxy.com/https://github.com/$1 $1
+    git clone https://hd-home.zeabur.app/https://github.com/$1 $1
     cd $1
     git remote set-url origin https://github.com/$1
     gh repo fork --remote
